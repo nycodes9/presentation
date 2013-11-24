@@ -37,16 +37,21 @@ public class BaseActivity extends Activity {
 	private static Uri fileUri;
 	private static Drive driveService;
 	private GoogleAccountCredential credential;
-	final private List<String> SCOPES = Arrays.asList(new String[]{
-			DriveScopes.DRIVE, DriveScopes.DRIVE_FILE 
-		  });
+	final private List<String> SCOPES = Arrays.asList(new String[] { DriveScopes.DRIVE,
+			DriveScopes.DRIVE_FILE });
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		credential = GoogleAccountCredential.usingOAuth2(this, SCOPES);
-		startActivityForResult(credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+		if (credential.getSelectedAccountName() != null) {
+			Log.d(TAG, "Selected a/c name : " + credential.getSelectedAccountName());
+			loadDriveFiles();
+			
+		} else {
+			startActivityForResult(credential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+		}
 	}
 
 	@Override
@@ -57,47 +62,7 @@ public class BaseActivity extends Activity {
 				String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 				if (accountName != null) {
 					credential.setSelectedAccountName(accountName);
-					driveService = getDriveService(credential);
-//					startCameraIntent();
-					
-					new AsyncTask<Void, Void, Boolean>() {
-
-						FileList driveFileList;
-						
-						@Override
-						protected Boolean doInBackground(Void... params) {
-							try {
-								String query = /*"mimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'"
-										+ "or"
-										+*/ "mimeType = application/application/vnd.google-apps.presentation";
-								
-								driveFileList = driveService.files().list()
-										.setQ("mimeType = 'application/vnd.google-apps.folder' and 'me' in owners")
-										.execute();
-							} catch (UserRecoverableAuthIOException e) {
-								startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
-							} catch (IOException e) {
-								e.printStackTrace();
-								return false;
-							}
-							return true;
-						}
-						
-						protected void onPostExecute(Boolean result) {
-							
-							Log.i(TAG, "Execute success : " + result);
-							Log.i(TAG, "Execute success : " + driveFileList.getKind());
-							Log.i(TAG, "Execute success : " + driveFileList.getNextLink());
-							Log.i(TAG, "Execute success : " + driveFileList.getSelfLink());
-							Log.i(TAG, "Execute success : " + driveFileList.getKind());
-							
-							for (File temp :  driveFileList.getItems()) {
-								Log.d(TAG, "Filelist : " + temp.getTitle());
-							}
-						}
-					}.execute();
-					
-					
+					loadDriveFiles();
 				}
 			}
 			break;
@@ -115,6 +80,51 @@ public class BaseActivity extends Activity {
 		}
 	}
 
+	private void loadDriveFiles() {
+		driveService = getDriveService(credential);
+		// startCameraIntent();
+
+		new AsyncTask<Void, Void, Boolean>() {
+
+			FileList driveFileList;
+
+			@Override
+			protected Boolean doInBackground(Void... params) {
+				try {
+					String query = /*
+									 * "mimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'"
+									 * + "or" +
+									 */"mimeType = application/application/vnd.google-apps.presentation";
+
+					driveFileList = driveService
+							.files()
+							.list()
+							.setQ("mimeType = 'application/vnd.google-apps.folder' and 'me' in owners")
+							.execute();
+				} catch (UserRecoverableAuthIOException e) {
+					startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
+				} catch (IOException e) {
+					e.printStackTrace();
+					return false;
+				}
+				return true;
+			}
+
+			protected void onPostExecute(Boolean result) {
+
+				Log.i(TAG, "Execute success : " + result);
+				Log.i(TAG, "Execute success : " + driveFileList.getKind());
+				Log.i(TAG, "Execute success : " + driveFileList.getNextLink());
+				Log.i(TAG, "Execute success : " + driveFileList.getSelfLink());
+				Log.i(TAG, "Execute success : " + driveFileList.getKind());
+
+				for (File temp : driveFileList.getItems()) {
+					Log.d(TAG, "Filelist : " + temp.getTitle());
+				}
+			}
+		}.execute();
+	}
+	
 	private void startCameraIntent() {
 		String mediaStorageDir = Environment.getExternalStoragePublicDirectory(
 				Environment.DIRECTORY_PICTURES).getPath();
