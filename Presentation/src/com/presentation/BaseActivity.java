@@ -67,12 +67,12 @@ public class BaseActivity extends Activity {
 						@Override
 						protected Boolean doInBackground(Void... params) {
 							try {
-								String query = "mimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'"
+								String query = /*"mimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'"
 										+ "or"
-										+ "mimeType = 'application/application/vnd.google-apps.presentation'";
+										+*/ "mimeType = application/application/vnd.google-apps.presentation";
 								
 								driveFileList = driveService.files().list()
-										.setQ(query)
+										.setQ("mimeType = 'application/vnd.google-apps.folder' and 'me' in owners")
 										.execute();
 							} catch (UserRecoverableAuthIOException e) {
 								startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
