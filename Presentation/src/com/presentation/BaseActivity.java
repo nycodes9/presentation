@@ -67,7 +67,13 @@ public class BaseActivity extends Activity {
 						@Override
 						protected Boolean doInBackground(Void... params) {
 							try {
-								driveFileList = driveService.files().list().execute();
+								String query = "mimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation'"
+										+ "or"
+										+ "mimeType = 'application/application/vnd.google-apps.presentation'";
+								
+								driveFileList = driveService.files().list()
+										.setQ(query)
+										.execute();
 							} catch (UserRecoverableAuthIOException e) {
 								startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
 							} catch (IOException e) {
@@ -86,7 +92,7 @@ public class BaseActivity extends Activity {
 							Log.i(TAG, "Execute success : " + driveFileList.getKind());
 							
 							for (File temp :  driveFileList.getItems()) {
-								Log.d(TAG, "Filelist : " + temp.getTitle() + " mimetype : " + temp.getMimeType());
+								Log.d(TAG, "Filelist : " + temp.getTitle());
 							}
 						}
 					}.execute();
