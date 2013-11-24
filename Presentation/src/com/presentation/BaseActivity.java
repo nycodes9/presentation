@@ -68,6 +68,8 @@ public class BaseActivity extends Activity {
 						protected Boolean doInBackground(Void... params) {
 							try {
 								driveFileList = driveService.files().list().execute();
+							} catch (UserRecoverableAuthIOException e) {
+								startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
 							} catch (IOException e) {
 								e.printStackTrace();
 								return false;
@@ -76,6 +78,13 @@ public class BaseActivity extends Activity {
 						}
 						
 						protected void onPostExecute(Boolean result) {
+							
+							Log.i(TAG, "Execute success : " + result);
+							Log.i(TAG, "Execute success : " + driveFileList.getKind());
+							Log.i(TAG, "Execute success : " + driveFileList.getNextLink());
+							Log.i(TAG, "Execute success : " + driveFileList.getSelfLink());
+							Log.i(TAG, "Execute success : " + driveFileList.getKind());
+							
 							for (File temp :  driveFileList.getItems()) {
 								Log.d(TAG, "Filelist : " + temp.getTitle() + " mimetype : " + temp.getMimeType());
 							}
