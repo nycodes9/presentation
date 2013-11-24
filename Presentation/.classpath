@@ -3,7 +3,13 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="lib" path="libs/google-play-services.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/home/raj/git/presentation/Presentation/libs/docs-gplay/reference/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+	<classpathentry kind="con" path="com.google.gdt.eclipse.managedapis.MANAGED_API_CONTAINER/drive-v2r107lv1.16.0-rc"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
