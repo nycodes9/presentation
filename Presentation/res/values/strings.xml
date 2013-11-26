@@ -4,5 +4,29 @@
     <string name="app_name">Presentation</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    
+    <!-- Launcher String -->
+    <string name="start_presentation">start an entation</string>
+    
+    
+    <!-- Main Acitivty -->
+    <string name="main_activity_title">Immersions</string>
+    <string name="main_activity_text">Activity with menu items \n -Next \n -Voice</string>
+    
+    <!-- Next Acitivty -->
+    <string name="next_activity_title">Next Activity</string>
+        
+    <!-- Voice Trigger Activity -->
+    <string name="voice_trigger_title">Voice Trigger Activity</string>
+    <string name="voice_trigger_text">Voice Input:</string>    
+    
+    
+    <!-- Menu Items -->
+    <string name="next">Next</string>
+    <string name="voice_input">Speak</string>
+    
+    
+    <!-- Bundle Key -->
+    <string name="bundle_key_speech">Speech</string>
 
 </resources>

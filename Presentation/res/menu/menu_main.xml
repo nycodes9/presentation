@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+     <item
+        android:id="@+id/next"
+        android:title="@string/next"
+        android:icon="@drawable/ic_read_aloud" />
+     <item
+        android:id="@+id/voice_input"
+        android:title="@string/voice_input"
+        android:icon="@drawable/ic_read_aloud" />
+</menu>
